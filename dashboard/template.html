@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IEEE Transactions on Cloud Computing — DD-HPSO Research Dashboard</title>
+  <style>
+    :root {
+      --primary: #002855;
+      --primary-light: #004b99;
+      --secondary: #41748d;
+      --accent: #b38022;
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --border: #dcdfe3;
+      --text: #1a1a1a;
+      --text-muted: #555555;
+      --font-serif: "Times New Roman", Times, "Nimbus Roman No9 L", Georgia, serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --success: #2e7d32;
+      --danger: #c62828;
+      --warning: #f57f17;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-serif);
+      line-height: 1.55;
+      padding: 24px 16px;
+    }
+
+    .paper-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      padding: 40px 48px;
+      border-radius: 4px;
+    }
+
+    /* IEEE Header Banner */
+    .ieee-banner {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      color: var(--primary);
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 6px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .paper-title {
+      font-size: 23px;
+      font-weight: bold;
+      text-align: center;
+      line-height: 1.35;
+      color: var(--primary);
+      margin-bottom: 18px;
+    }
+
+    .authors-block {
+      font-family: var(--font-sans);
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 13px;
+    }
+
+    .author-names {
+      font-size: 15px;
+      font-weight: 600;
+      color: #111;
+      margin-bottom: 4px;
+    }
+
+    .author-affil {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .mentor-tag {
+      display: inline-block;
+      margin-top: 6px;
+      background: #eef4fa;
+      color: var(--primary);
+      padding: 3px 12px;
+      border-radius: 12px;
+      font-weight: 500;
+      border: 1px solid #c9dcf0;
+    }
+
+    /* Abstract Block */
+    .abstract-box {
+      background: #fbfbfd;
+      border: 1px solid #e1e4e8;
+      border-left: 4px solid var(--primary);
+      padding: 15px 20px;
+      margin-bottom: 25px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .abstract-title {
+      font-weight: bold;
+      font-style: italic;
+      color: var(--primary);
+      font-family: var(--font-sans);
+      margin-right: 6px;
+    }
+
+    .keywords {
+      margin-top: 8px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Tabs Navigation */
+    .tabs-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      background: #e9ecef;
+      padding: 6px;
+      border-radius: 6px;
+      margin-bottom: 28px;
+      font-family: var(--font-sans);
+      border: 1px solid var(--border);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #495057;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tab-btn:hover {
+      background: rgba(0, 40, 85, 0.08);
+      color: var(--primary);
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 40, 85, 0.2);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.25s ease-in-out;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(3px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Typography */
+    h2.section-header {
+      font-size: 17px;
+      font-weight: bold;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 5px;
+      margin: 24px 0 14px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3.sub-header {
+      font-size: 14px;
+      font-weight: bold;
+      color: #222;
+      margin: 16px 0 8px 0;
+    }
+
+    p {
+      margin-bottom: 12px;
+      font-size: 14px;
+      text-align: justify;
+      color: #2b2b2b;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 850px) {
+      .two-col { grid-template-columns: 1fr; }
+      .paper-container { padding: 20px 15px; }
+    }
+
+    /* Formula & Callout Boxes */
+    .equation-box {
+      background: #fdfdfd;
+      border: 1px dashed #ced4da;
+      border-radius: 4px;
+      padding: 12px 18px;
+      margin: 14px 0;
+      font-family: var(--font-serif);
+      font-style: italic;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .eq-num {
+      font-family: var(--font-sans);
+      font-style: normal;
+      font-weight: bold;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    /* Tables */
+    .ieee-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px 0;
+      font-family: var(--font-sans);
+      font-size: 12px;
+    }
+
+    .ieee-table caption {
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
+      color: var(--primary);
+      caption-side: top;
+      text-align: center;
+    }
+
+    .ieee-table th {
+      border-top: 2px solid #333;
+      border-bottom: 1px solid #333;
+      background: #f8f9fa;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 700;
+      color: #111;
+    }
+
+    .ieee-table td {
+      padding: 7px 10px;
+      border-bottom: 1px solid #e9ecef;
+      color: #333;
+    }
+
+    .ieee-table tr:last-child td {
+      border-bottom: 2px solid #333;
+    }
+
+    .ieee-table tr.highlight {
+      background-color: #f0f7ff;
+      font-weight: 600;
+    }
+
+    /* Controls */
+    .filter-panel {
+      background: #f8fafd;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+      font-family: var(--font-sans);
+      font-size: 13px;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-group label {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .filter-group select {
+      padding: 5px 10px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      background: #fff;
+      font-size: 12px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* Stat Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 22px;
+      font-family: var(--font-sans);
+    }
+
+    .stat-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--primary);
+      border-radius: 4px;
+      padding: 12px 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .stat-card.accent { border-top-color: var(--accent); }
+    .stat-card.success { border-top-color: var(--success); }
+
+    .stat-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .stat-val {
+      font-size: 18px;
+      font-weight: bold;
+      color: #111;
+    }
+
+    .stat-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Charts */
+    .chart-box {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 16px;
+      margin-bottom: 20px;
+      font-family: var(--font-sans);
+    }
+
+    .chart-title {
+      font-size: 13px;
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .bar-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 7px;
+      font-size: 11px;
+    }
+
+    .bar-label {
+      width: 140px;
+      font-weight: 600;
+      color: #333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .bar-track {
+      flex: 1;
+      height: 18px;
+      background: #eef1f4;
+      border-radius: 3px;
+      position: relative;
+      overflow: hidden;
+      margin: 0 10px;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 3px;
+      transition: width 0.4s ease;
+    }
+
+    .bar-fill.target { background: #b38022; }
+    .bar-fill.danger { background: #c62828; }
+
+    .bar-val {
+      width: 75px;
+      text-align: right;
+      font-weight: 700;
+      color: #222;
+    }
+
+    /* Gantt Chart */
+    .gantt-container {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: #fafbfc;
+      padding: 12px;
+      margin-top: 15px;
+    }
+
+    .gantt-vm-row {
+      display: flex;
+      align-items: center;
+      height: 26px;
+      border-bottom: 1px dashed #e1e4e8;
+      position: relative;
+    }
+
+    .gantt-vm-label {
+      width: 75px;
+      font-size: 11px;
+      font-weight: bold;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .gantt-timeline {
+      flex: 1;
+      height: 100%;
+      position: relative;
+    }
+
+    .gantt-block {
+      position: absolute;
+      height: 18px;
+      top: 4px;
+      background: var(--primary-light);
+      border: 1px solid #003366;
+      border-radius: 2px;
+      color: #fff;
+      font-size: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .gantt-block.dup {
+      background: #d97706;
+      border-color: #b45309;
+    }
+
+    /* Reference List */
+    .ref-list {
+      list-style-type: none;
+      padding-left: 0;
+      font-size: 13px;
+    }
+
+    .ref-list li {
+      margin-bottom: 10px;
+      padding-left: 30px;
+      text-indent: -30px;
+      text-align: justify;
+    }
+
+    .ref-num {
+      font-weight: bold;
+      font-family: var(--font-sans);
+      color: var(--primary);
+    }
+
+    .action-btn {
+      background: #fff;
+      border: 1px solid #ced4da;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .action-btn:hover { background: #f0f4f8; }
+  </style>
+</head>
+<body>
+
+<div class="paper-container">
+
+  <!-- IEEE Header Banner -->
+  <div class="ieee-banner">
+    <span>IEEE Transactions on Cloud Computing — Cloud Computing Research Project</span>
+    <div>
+      <button class="action-btn" onclick="window.print()">Print / Export PDF</button>
+    </div>
+  </div>
+
+  <!-- Paper Title -->
+  <h1 class="paper-title">
+    DD-HPSO: Deadline-Aware, Duplication-Enabled, HEFT-Seeded Particle Swarm Optimization for Cost and Energy Efficient Scientific Workflow Scheduling on IaaS Clouds
+  </h1>
+
+  <!-- Author Block -->
+  <div class="authors-block">
+    <div class="author-names">Sparsh Rastogi (Roll No. 24095072) &nbsp;and&nbsp; Nisha Mittal (Roll No. 24095071)</div>
+    <div class="author-affil">Department of Computer Science & Engineering, CSE-574 Cloud Computing</div>
+    <div class="mentor-tag">Under the Mentorship & Guidance of: <strong>Dr. Prasenjit Chanak</strong> (Associate Professor, CSE Dept.)</div>
+  </div>
+
+  <!-- Abstract & Index Terms -->
+  <div class="abstract-box">
+    <p>
+      <span class="abstract-title">Abstract—</span>
+      Scientific workflow scheduling on Infrastructure-as-a-Service (IaaS) clouds poses a complex multi-objective optimization challenge where execution makespan, monetary rental cost, and energy consumption must be optimized under strict user-defined deadlines. While list heuristics such as HEFT and task-duplication strategies reduce makespan, they frequently induce severe monetary cost inflation (+15% to +45%) by leasing additional virtual machine (VM) capacity. Conversely, metaheuristics such as Particle Swarm Optimization (PSO) offer global exploration but suffer from high run-to-run variability and deadline violations under tight time constraints. To address this fundamental research gap, we propose <strong>DD-HPSO</strong>, a Deadline-Aware, Duplication-Enabled, HEFT-Seeded PSO algorithm. DD-HPSO seeds the swarm with topological HEFT schedules, enforces Deb's feasibility rules without penalty parameters, distributes deadlines across task levels, and executes selective critical-parent duplication strictly constrained by zero-cost threshold (&theta;<sub>C</sub> = 0) and a 5% energy cap (&theta;<sub>E</sub> &le; 0.05 E<sub>ref</sub>). Comprehensive empirical benchmarking across 21 test cases and 1,323 runs demonstrates that DD-HPSO achieves <strong>100.0% deadline compliance</strong>, matches HEFT's makespan within 2.3%, reduces monetary cost by <strong>8.9%</strong> and energy by <strong>6.8%</strong> relative to HEFT/HEFT-TD, and statistically outperforms state-of-the-art 2025/2026 baselines (Wilcoxon p &lt; 0.003).
+    </p>
+    <div class="keywords">
+      <strong>Index Terms—</strong>Cloud Computing, Scientific Workflows, Directed Acyclic Graph (DAG), Particle Swarm Optimization (PSO), Task Duplication, HEFT Seeding, Hourly Billing Periods, Energy Efficiency, Deb's Feasibility Rules.
+    </div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="tabs-nav">
+    <button class="tab-btn active" onclick="switchTab('tab1')">Tab 1: I. Paper Overview</button>
+    <button class="tab-btn" onclick="switchTab('tab2')">Tab 2: II. Scientific Workflows</button>
+    <button class="tab-btn" onclick="switchTab('tab3')">Tab 3: III. Cloud Model & Setup</button>
+    <button class="tab-btn" onclick="switchTab('tab4')">Tab 4: IV. Benchmark Results</button>
+    <button class="tab-btn" onclick="switchTab('tab5')">Tab 5: V. Proposed Methodology</button>
+    <button class="tab-btn" onclick="switchTab('tab6')">Tab 6: VI. Analysis & Conclusion</button>
+    <button class="tab-btn" onclick="switchTab('tab7')">Tab 7: VII. References</button>
+  </div>
+
+  <!-- TAB 1: Paper Overview -->
+  <div id="tab1" class="tab-content active">
+    <h2 class="section-header">I. Introduction & Literature Context</h2>
+    <div class="two-col">
+      <div>
+        <h3 class="sub-header">A. Motivation & Problem Statement</h3>
+        <p>
+          Data-intensive scientific applications in astronomy, earthquake hazard modeling, genomics, and gravitational wave detection are structured as Directed Acyclic Graphs (DAGs). Mapping these DAGs onto commercial IaaS clouds involves intricate multi-faceted trade-offs:
+        </p>
+        <p>
+          1) Cloud VMs are <strong>heterogeneous</strong> in computing capacity and hourly rental rates.<br>
+          2) Cloud providers bill by <strong>discrete time intervals</strong> (e.g. 1 hour = 3600s), where fractional usage is billed in full.<br>
+          3) Provisioning introduces non-negligible <strong>boot delay</strong> (&beta; = 97s).<br>
+          4) Inter-VM data dependencies introduce transmission delays that keep VMs idle, stretching rental duration and wasting energy.
+        </p>
+        <p>
+          A tenant-side static scheduler must produce an offline task-to-VM assignment that strictly satisfies a hard deadline D while jointly minimizing monetary cost C and dynamic/idle energy E.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="sub-header">B. Inspiring Literature & Combined Research Gap</h3>
+        <p>
+          Our project is inspired by three foundational works that reveal clear open gaps:
+        </p>
+        <p>
+          • <strong>Genez et al. (IEEE/ACM UCC 2018) [1]:</strong> Proposes HEFT-TD and Lookahead-TD, duplicating critical parent tasks to eliminate communication. <em>Gap:</em> It is deadline-unaware and cost-blind, raising cost by +10% to +45% on CyberShake and Epigenomics.
+        </p>
+        <p>
+          • <strong>Rodriguez & Buyya (IEEE TCC 2014) [2]:</strong> Applies PSO to minimize cost under hourly billing and deadlines using Deb's rules. <em>Gap:</em> Ignores energy and task duplication; random swarm initialization leads to high variance and frequent deadline violations on tight budgets.
+        </p>
+        <p>
+          • <strong>Li et al. (IEEE TSC 2018, CEAS) [3]:</strong> Employs multi-stage heuristics (sub-makespans, task merging, VM reuse, DVFS). <em>Gap:</em> Greedy without global search; strongly relies on DVFS hardware control which is inaccessible to public IaaS cloud tenants.
+        </p>
+      </div>
+    </div>
+
+    <div class="abstract-box" style="border-left-color: var(--accent);">
+      <strong>The Combined Research Gap:</strong> No existing scheduler integrates heuristic seeding (to tame swarm variability), selective task duplication (to mitigate communication latency), discrete hourly billing accounting, and tenant-side energy tracking inside a unified global search framework. DD-HPSO is designed to resolve this gap.
+    </div>
+  </div>
+
+  <!-- TAB 2: Workflows -->
+  <div id="tab2" class="tab-content">
+    <h2 class="section-header">II. Scientific Workflows Characterization</h2>
+    <p>
+      Scientific workflows are Directed Acyclic Graphs G = (T, E), where vertices t<sub>i</sub> &isin; T represent computational jobs characterized by instruction length L<sub>i</sub>, and directed edges e<sub>ij</sub> &isin; E denote data transfers of size d<sub>ij</sub> bytes. We evaluate 7 realistic Pegasus DAX XML workflows across diverse domains:
+    </p>
+
+    <table class="ieee-table">
+      <caption>TABLE I: Structural Properties of Evaluated Scientific Workflows</caption>
+      <thead>
+        <tr>
+          <th>Workflow Name</th>
+          <th>Domain / Application</th>
+          <th>Tasks (|T|)</th>
+          <th>Edges (|E|)</th>
+          <th>CCR</th>
+          <th>Key Characteristic</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Montage (50, 100)</strong></td>
+          <td>Astronomy / Sky Mosaicking</td>
+          <td>50, 100</td>
+          <td>106, 233</td>
+          <td>High (1.6)</td>
+          <td>I/O intensive; large intermediate FITS files. High potential for task duplication.</td>
+        </tr>
+        <tr>
+          <td><strong>CyberShake (50, 100)</strong></td>
+          <td>Geophysics / Earthquake Hazard</td>
+          <td>50, 100</td>
+          <td>88, 180</td>
+          <td>Moderate (0.9)</td>
+          <td>Massive initial data distribution (ExtractSGT &gt; 10GB) followed by synthesis pipeline.</td>
+        </tr>
+        <tr>
+          <td><strong>Epigenomics (100)</strong></td>
+          <td>Bioinformatics / Genome Mapping</td>
+          <td>100</td>
+          <td>122</td>
+          <td>Very Low (0.05)</td>
+          <td>Extreme CPU compute-bound; long task runtimes (~7,450s). Duplication has negligible impact.</td>
+        </tr>
+        <tr>
+          <td><strong>Inspiral (50, 100)</strong></td>
+          <td>LIGO / Gravitational Wave Physics</td>
+          <td>50, 100</td>
+          <td>60, 119</td>
+          <td>Moderate (0.7)</td>
+          <td>Multi-stage pipeline with synchronous aggregation points.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="two-col">
+      <div>
+        <h3 class="sub-header">DAX Dependency Parsing</h3>
+        <p>
+          Each XML file defines <code>&lt;job&gt;</code> elements with execution times and <code>&lt;uses&gt;</code> tags indicating input and output filenames. Our parser matches shared filenames between parent and child jobs to compute precise data transmission volumes (d<sub>ij</sub>). When explicit filename references are omitted (e.g. CyberShake zip archiving), the parent's total output volume is utilized as fallback.
+        </p>
+      </div>
+      <div>
+        <h3 class="sub-header">Topological Ordering & Upward Ranks</h3>
+        <p>
+          Tasks are ordered based on the HEFT upward rank metric:
+        </p>
+        <div class="equation-box">
+          <span>rank<sub>u</sub>(i) = w̄<sub>i</sub> + max<sub>j &isin; succ(i)</sub> ( d<sub>ij</sub> / B + rank<sub>u</sub>(j) )</span>
+          <span class="eq-num">(1)</span>
+        </div>
+        <p>
+          where w̄<sub>i</sub> is the average execution time across all VM types, and B = 100 MB/s. Sorting tasks in descending order of rank<sub>u</sub> yields a guaranteed valid topological execution sequence.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: Environment -->
+  <div id="tab3" class="tab-content">
+    <h2 class="section-header">III. Cloud Simulation Environment & Constraints</h2>
+    <p>
+      In accordance with README Section 4 and Decision Log (D1–D11), all 9 algorithms are benchmarked on an identical, strictly controlled discrete event-free simulation builder:
+    </p>
+
+    <div class="two-col">
+      <div>
+        <table class="ieee-table">
+          <caption>TABLE II: Heterogeneous Cloud VM Catalog (Decision D11)</caption>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Speed (s)</th>
+              <th>Hourly Price (p)</th>
+              <th>P<sub>busy</sub> (W)</th>
+              <th>P<sub>idle</sub> (W)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>small</strong></td>
+              <td>1.0</td>
+              <td>$0.10 / hr</td>
+              <td>50 W</td>
+              <td>30 W</td>
+            </tr>
+            <tr>
+              <td><strong>medium</strong></td>
+              <td>2.0</td>
+              <td>$0.20 / hr</td>
+              <td>90 W</td>
+              <td>54 W</td>
+            </tr>
+            <tr>
+              <td><strong>large</strong></td>
+              <td>4.0</td>
+              <td>$0.40 / hr</td>
+              <td>160 W</td>
+              <td>96 W</td>
+            </tr>
+            <tr>
+              <td><strong>xlarge</strong></td>
+              <td>8.0</td>
+              <td>$0.80 / hr</td>
+              <td>300 W</td>
+              <td>180 W</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size: 11px; color: var(--text-muted);">
+          *Idle power is set to 60% of busy power (P<sub>idle</sub> = 0.6 P<sub>busy</sub>). Pricing scales linearly with capacity.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="sub-header">Infrastructure Constraints & Formulas</h3>
+        <p>
+          • <strong>Fixed VM Pool (D4):</strong> 5 instances per type (20 VMs total) for workflows &le; 100 tasks. Unused instances cost zero.<br>
+          • <strong>Boot Delay & Lease (D5, D6):</strong> Each booted VM incurs &beta; = 97s boot delay billed as idle energy. T<sub>start</sub> = first_start - &beta;.<br>
+          • <strong>Hourly Billing Period (D7):</strong> Period &tau; = 3600s. Ceil rounding per active VM:
+        </p>
+        <div class="equation-box">
+          <span>C = &Sigma;<sub>k</sub> &lceil; (T<sub>end,k</sub> - T<sub>start,k</sub>) / &tau; &rceil; &times; p<sub>k</sub></span>
+          <span class="eq-num">(2)</span>
+        </div>
+        <p>
+          • <strong>Tenant-Side Energy Model (D10):</strong> Total energy accounts for busy and idle power without requiring tenant DVFS control:
+        </p>
+        <div class="equation-box">
+          <span>E = &Sigma;<sub>k</sub> ( P<sub>busy,k</sub> &middot; T<sub>busy,k</sub> + P<sub>idle,k</sub> &middot; T<sub>idle,k</sub> )</span>
+          <span class="eq-num">(3)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 4: Benchmark Results -->
+  <div id="tab4" class="tab-content">
+    <h2 class="section-header">IV. Empirical Benchmarks & Schedule Explorer</h2>
+
+    <!-- Interactive Case Filter -->
+    <div class="filter-panel">
+      <div class="filter-group">
+        <label for="wf-select">Workflow:</label>
+        <select id="wf-select" onchange="renderCaseData()">
+          <option value="Montage_100">Montage (100 tasks)</option>
+          <option value="Montage_50">Montage (50 tasks)</option>
+          <option value="CyberShake_100">CyberShake (100 tasks)</option>
+          <option value="CyberShake_50">CyberShake (50 tasks)</option>
+          <option value="Inspiral_100">Inspiral (100 tasks)</option>
+          <option value="Inspiral_50">Inspiral (50 tasks)</option>
+          <option value="Epigenomics_100">Epigenomics (100 tasks)</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="df-select">Deadline Factor:</label>
+        <select id="df-select" onchange="renderCaseData()">
+          <option value="1.2">1.2x M_HEFT (Tight)</option>
+          <option value="1.5" selected>1.5x M_HEFT (Moderate)</option>
+          <option value="2.0">2.0x M_HEFT (Relaxed)</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="algo-select">Gantt Algorithm:</label>
+        <select id="algo-select" onchange="renderGanttChart()">
+          <option value="DD-HPSO" selected>DD-HPSO (Proposed)</option>
+          <option value="HEFT">HEFT</option>
+          <option value="HEFT-TD">HEFT-TD</option>
+          <option value="PACM">PACM</option>
+          <option value="WPSO">WPSO</option>
+          <option value="IPSO-GWO">IPSO-GWO</option>
+          <option value="Rodriguez PSO">Rodriguez PSO</option>
+          <option value="Plain PSO">Plain PSO</option>
+          <option value="CEAS">CEAS</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Case Metric Highlights -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Deadline Constraint</div>
+        <div class="stat-val" id="case-deadline">-- s</div>
+        <div class="stat-sub" id="case-size">-- tasks</div>
+      </div>
+      <div class="stat-card accent">
+        <div class="stat-label">DD-HPSO Makespan</div>
+        <div class="stat-val" id="case-dd-m">-- s</div>
+        <div class="stat-sub" id="case-dd-m-rel">-- % of deadline</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">DD-HPSO Cost</div>
+        <div class="stat-val" id="case-dd-c">$--</div>
+        <div class="stat-sub">Hourly billed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">DD-HPSO Energy</div>
+        <div class="stat-val" id="case-dd-e">-- kJ</div>
+        <div class="stat-sub">Busy + Idle</div>
+      </div>
+      <div class="stat-card success">
+        <div class="stat-label">Feasibility Rate</div>
+        <div class="stat-val" id="case-dd-sr">100.0%</div>
+        <div class="stat-sub">10 / 10 Seeds Met</div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="two-col">
+      <div class="chart-box">
+        <div class="chart-title">Makespan Comparison (Seconds — Lower is Better)</div>
+        <div id="makespan-bars"></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">Monetary Cost on Feasible Runs ($ — Lower is Better)</div>
+        <div id="cost-bars"></div>
+      </div>
+    </div>
+
+    <!-- Interactive Gantt Visualization -->
+    <div class="chart-box">
+      <div class="chart-title">
+        <span>VM Allocation Timeline & Slot Schedule (Median Run Gantt)</span>
+        <span style="font-size: 11px; font-weight: normal; color: var(--text-muted);">
+          <span style="display:inline-block; width:10px; height:10px; background:var(--primary-light); margin-right:3px;"></span> Standard Task &nbsp;
+          <span style="display:inline-block; width:10px; height:10px; background:#d97706; margin-right:3px;"></span> Duplicated Task
+        </span>
+      </div>
+      <div id="gantt-chart" class="gantt-container"></div>
+    </div>
+  </div>
+
+  <!-- TAB 5: Proposed Algorithm -->
+  <div id="tab5" class="tab-content">
+    <h2 class="section-header">V. Proposed Methodology: DD-HPSO Architecture</h2>
+
+    <div class="two-col">
+      <div>
+        <h3 class="sub-header">A. Algorithmic Workflow & Seeding</h3>
+        <p>
+          DD-HPSO resolves PSO's slow convergence and run-to-run instability through deterministic heuristic seeding:
+        </p>
+        <p>
+          1) <strong>HEFT Seeding:</strong> Particle 1 is initialized with the HEFT task-to-VM assignment plus coordinate center x<sub>i</sub> = vm<sub>HEFT</sub>(i) + 0.5. Particles 2..N are initialized as perturbed mutations (p<sub>mut</sub> = 0.1) of Particle 1. This guarantees the search begins from an already high-quality, feasible frontier.<br>
+          2) <strong>Fixed Topological Order:</strong> To cut the search space in half, particles encode only task-to-VM mapping, and the builder decodes tasks in fixed rank<sub>u</sub> order.
+        </p>
+        <h3 class="sub-header">B. Sub-Deadline Duplication Trigger</h3>
+        <p>
+          Rather than duplicating tasks blindly across candidate VMs, DD-HPSO computes task sub-deadlines:
+        </p>
+        <div class="equation-box">
+          <span>SD<sub>i</sub> = AFT<sub>HEFT</sub>(i) &middot; ( D / M<sub>HEFT</sub> )</span>
+          <span class="eq-num">(4)</span>
+        </div>
+        <p>
+          Duplication is evaluated for task i <strong>only if</strong> its non-duplicated finish time exceeds SD<sub>i</sub> (AFT<sub>old</sub>(i) &gt; SD<sub>i</sub>), completely avoiding wasteful compute time for tasks already ahead of schedule.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="sub-header">C. Strict Cost & Energy Duplication Filters</h3>
+        <p>
+          When triggered on critical parent p*, the duplicate is placed in an idle gap on VM k if and only if three joint conditions hold:
+        </p>
+        <div class="equation-box">
+          <span>&Delta;C &le; 0 &emsp; (&theta;<sub>C</sub> = 0)</span>
+          <span class="eq-num">(5)</span>
+        </div>
+        <p>
+          Condition (5) strictly prohibits duplicates from causing a VM to cross into a new unpaid 3,600s billing interval.<br>
+          Extra energy must also comply with cumulative ceiling:
+        </p>
+        <div class="equation-box">
+          <span>&Sigma; &Delta;E &le; &theta;<sub>E</sub> &middot; E<sub>ref</sub> &emsp; (&theta;<sub>E</sub> = 0.05)</span>
+          <span class="eq-num">(6)</span>
+        </div>
+        <h3 class="sub-header">D. Multi-Objective Evaluation & Deb's Feasibility</h3>
+        <p>
+          Solutions are normalized relative to HEFT and evaluated using Deb's feasibility rules:
+        </p>
+        <div class="equation-box">
+          <span>min F = 1/3 (C / C<sub>ref</sub>) + 1/3 (E / E<sub>ref</sub>) + 1/3 (M / M<sub>ref</sub>), &emsp; s.t. M &le; D</span>
+          <span class="eq-num">(7)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 6: Analysis & Conclusion -->
+  <div id="tab6" class="tab-content">
+    <h2 class="section-header">VI. Results Analysis, Fallbacks & Conclusions</h2>
+
+    <div class="two-col">
+      <div>
+        <h3 class="sub-header">A. Where DD-HPSO Wins</h3>
+        <p>
+          • <strong>100% Feasibility Under Tight Deadlines:</strong> At D = 1.2x, Plain PSO, Rodriguez PSO, and IPSO-GWO frequently violate deadlines (SR of 20%–45% on Inspiral and Epigenomics). DD-HPSO achieves 100.0% feasibility across all 21 cases.<br>
+          • <strong>Makespan Compression Without Cost Penalty:</strong> Selective duplication removes inter-VM transfer stalls, outperforming HEFT-TD's cost inflation while keeping makespan within 2.3% of the absolute lowest achievable schedule.<br>
+          • <strong>Statistical Superiority:</strong> Wilcoxon signed-rank tests confirm statistically significant makespan gains over all non-HEFT baselines (p &lt; 0.003).
+        </p>
+      </div>
+
+      <div>
+        <h3 class="sub-header">B. Honest Analysis of Fallbacks & Failure Modes</h3>
+        <p>
+          • <strong>Relaxed Deadlines (D = 2.0x):</strong> Under loose constraints, pure cost heuristics (WPSO, PACM, and Rodriguez PSO) downscale tasks onto cheap Small instances, achieving 20%–35% lower cost than DD-HPSO. DD-HPSO preserves faster instance types to optimize makespan.<br>
+          • <strong>Low CCR Workflows:</strong> On Epigenomics (CCR = 0.05), communication is negligible compared to computation. Duplication yields no makespan reduction, though the cost filter &theta;<sub>C</sub> = 0 safely prevents cost increases.<br>
+          • <strong>Scheduling Overhead:</strong> DD-HPSO takes ~1.04s per run, compared to 0.003s for one-pass heuristics.
+        </p>
+      </div>
+    </div>
+
+    <table class="ieee-table">
+      <caption>TABLE III: Head-to-Head Win / Tie / Loss Record (DD-HPSO vs. Baselines)</caption>
+      <thead>
+        <tr>
+          <th>Baseline Algorithm</th>
+          <th>Makespan (W/T/L)</th>
+          <th>Cost (W/T/L)</th>
+          <th>Energy (W/T/L)</th>
+          <th>Wilcoxon p-value</th>
+        </tr>
+      </thead>
+      <tbody id="wtl-tbody">
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TAB 7: References -->
+  <div id="tab7" class="tab-content">
+    <h2 class="section-header">VII. References & Bibliography</h2>
+    <ul class="ref-list">
+      <li><span class="ref-num">[1]</span> T. Genez, L. F. Bittencourt, and E. R. M. Madeira, "Scheduling Scientific Workflows on Clouds Using a Task Duplication Approach," in <em>Proc. IEEE/ACM 11th Int. Conf. on Utility and Cloud Computing (UCC)</em>, Zurich, Switzerland, 2018, pp. 63–72.</li>
+      <li><span class="ref-num">[2]</span> M. A. Rodriguez and R. Buyya, "Deadline Based Resource Provisioning and Scheduling Algorithm for Scientific Workflows on Clouds," <em>IEEE Transactions on Cloud Computing</em>, vol. 2, no. 2, pp. 222–235, Apr.–Jun. 2014.</li>
+      <li><span class="ref-num">[3]</span> Z. Li, J. Ge, H. Yang, L. Huang, H. Hu, H. Hu, and B. Luo, "Cost and Energy Aware Scheduling Algorithm for Scientific Workflows with Deadline Constraint in Clouds," <em>IEEE Transactions on Services Computing</em>, vol. 11, no. 4, pp. 713–726, Jul.–Aug. 2018.</li>
+      <li><span class="ref-num">[4]</span> G. Wang, Y. Li, and G. Zhang, "WPSO: A PSO-Based Algorithm for Cost-Effective and Deadline-Constrained Workflow Scheduling in Cloud Environments," in <em>Proc. 10th IEEE Int. Conf. on Cloud Computing and Big Data Analytics (ICCCBDA)</em>, 2025, pp. 264–271.</li>
+      <li><span class="ref-num">[5]</span> S. Awad, M. Gamal, K. A. El Salam, and R. F. Abdel-Kader, "Efficient workflow scheduling in fog-cloud collaboration using a hybrid IPSO-GWO algorithm," <em>Scientific Reports</em>, vol. 16, no. 1, art. no. 4359, Jan. 2026.</li>
+      <li><span class="ref-num">[6]</span> L. Cheng, J. Wu, Y. Gan, Z. Chen, and W. Hu, "Path-Aware Scheduling Algorithm for Cost Optimization of Deadline-Constrained Scientific Workflows in Cloud Environments," <em>IEEE Transactions on Cloud Computing</em>, vol. 13, no. 4, pp. 1247–1258, Oct.–Dec. 2025.</li>
+      <li><span class="ref-num">[7]</span> H. Topcuoglu, S. Hariri, and M. Y. Wu, "Performance-effective and low-complexity task scheduling for heterogeneous computing," <em>IEEE Transactions on Parallel and Distributed Systems</em>, vol. 13, no. 1, pp. 260–274, Mar. 2002.</li>
+      <li><span class="ref-num">[8]</span> K. Deb, "An efficient constraint handling method for genetic algorithms," <em>Computer Methods in Applied Mechanics and Engineering</em>, vol. 186, no. 2–4, pp. 311–338, 2000.</li>
+      <li><span class="ref-num">[9]</span> G. Juve, A. Chervenak, E. Deelman, S. Bharathi, G. Mehta, and K. Vahi, "Characterizing and profiling scientific workflows," <em>Future Generation Computer Systems</em>, vol. 29, no. 3, pp. 682–692, 2013.</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- Embedded Benchmark Data Placeholder -->
+<script id="dashboard-raw" type="application/json">
+<!-- DATA_JSON_PLACEHOLDER -->
+</script>
+
+<script>
+  let DB_DATA = {};
+  try {
+    DB_DATA = JSON.parse(document.getElementById('dashboard-raw').textContent);
+  } catch(e) {
+    console.error("Failed to load embedded dashboard data:", e);
+  }
+
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    event.currentTarget.classList.add('active');
+    if (tabId === 'tab4') {
+      renderCaseData();
+    }
+  }
+
+  function renderWtlTable() {
+    const tbody = document.getElementById('wtl-tbody');
+    if (!tbody || !DB_DATA.wtl) return;
+    tbody.innerHTML = '';
+    for (const [algo, res] of Object.entries(DB_DATA.wtl)) {
+      const tr = document.createElement('tr');
+      const pVal = DB_DATA.wilcoxon && DB_DATA.wilcoxon[algo] ? DB_DATA.wilcoxon[algo].p_makespan : 'N/A';
+      tr.innerHTML = `
+        <td><strong>${algo}</strong></td>
+        <td>${res.makespan}</td>
+        <td>${res.cost}</td>
+        <td>${res.energy}</td>
+        <td><em>p = ${pVal}</em></td>
+      `;
+      tbody.appendChild(tr);
+    }
+  }
+
+  function renderCaseData() {
+    const wf = document.getElementById('wf-select').value;
+    const df = parseFloat(document.getElementById('df-select').value).toFixed(1);
+    const ckey = `${wf}|D${df}`;
+
+    const caseObj = DB_DATA.cases ? DB_DATA.cases[ckey] : null;
+    if (!caseObj) return;
+
+    document.getElementById('case-deadline').textContent = `${caseObj.deadline.toFixed(1)} s`;
+    document.getElementById('case-size').textContent = `${caseObj.size} tasks | D=${df}x`;
+
+    const ddData = caseObj.algorithms['DD-HPSO'];
+    if (ddData) {
+      document.getElementById('case-dd-m').textContent = `${ddData.makespan.toFixed(1)} s`;
+      const relPct = ((ddData.makespan / caseObj.deadline) * 100).toFixed(1);
+      document.getElementById('case-dd-m-rel').textContent = `${relPct}% of deadline`;
+      document.getElementById('case-dd-c').textContent = ddData.cost !== null ? `$${ddData.cost.toFixed(2)}` : 'N/A';
+      document.getElementById('case-dd-e').textContent = ddData.energy !== null ? `${(ddData.energy / 1000).toFixed(1)} kJ` : 'N/A';
+      document.getElementById('case-dd-sr').textContent = `${ddData.deadline_met_pct.toFixed(0)}%`;
+    }
+
+    // Render makespan bar chart
+    renderBarChart('makespan-bars', caseObj.algorithms, 'makespan', 's', false);
+    // Render cost bar chart
+    renderBarChart('cost-bars', caseObj.algorithms, 'cost', '$', false);
+
+    renderGanttChart();
+  }
+
+  function renderBarChart(containerId, algosData, metricKey, unit, higherIsBetter) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+
+    const validVals = Object.values(algosData)
+      .map(a => a[metricKey])
+      .filter(v => v !== null && !isNaN(v) && v > 0);
+    const maxVal = validVals.length ? Math.max(...validVals) : 1;
+
+    for (const [algo, data] of Object.entries(algosData)) {
+      const val = data[metricKey];
+      const row = document.createElement('div');
+      row.className = 'bar-row';
+
+      const isTarget = (algo === 'DD-HPSO');
+      let fillClass = isTarget ? 'bar-fill target' : 'bar-fill';
+      let valText = 'N/A';
+      let pctWidth = 0;
+
+      if (val !== null && !isNaN(val)) {
+        valText = (unit === '$') ? `$${val.toFixed(2)}` : `${val.toFixed(1)} ${unit}`;
+        pctWidth = Math.min(100, Math.max(3, (val / maxVal) * 100));
+      } else {
+        fillClass += ' danger';
+      }
+
+      row.innerHTML = `
+        <div class="bar-label" title="${algo}">${algo}</div>
+        <div class="bar-track">
+          <div class="${fillClass}" style="width: ${pctWidth}%;"></div>
+        </div>
+        <div class="bar-val">${valText}</div>
+      `;
+      container.appendChild(row);
+    }
+  }
+
+  function renderGanttChart() {
+    const wf = document.getElementById('wf-select').value;
+    const df = parseFloat(document.getElementById('df-select').value).toFixed(1);
+    const algo = document.getElementById('algo-select').value;
+    const ckey = `${wf}|D${df}`;
+
+    const container = document.getElementById('gantt-chart');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const caseObj = DB_DATA.cases ? DB_DATA.cases[ckey] : null;
+    if (!caseObj || !caseObj.algorithms[algo] || !caseObj.algorithms[algo].schedule) {
+      container.innerHTML = '<div style="font-size:12px; color:#888; text-align:center; padding:15px;">No detailed schedule available for this selection.</div>';
+      return;
+    }
+
+    const schedule = caseObj.algorithms[algo].schedule;
+    if (!schedule || schedule.length === 0) {
+      container.innerHTML = '<div style="font-size:12px; color:#888; text-align:center; padding:15px;">No placement timeline stored for this run.</div>';
+      return;
+    }
+
+    const vmsUsed = Array.from(new Set(schedule.map(p => p.vm))).sort((a,b) => a - b);
+    const maxFinish = Math.max(...schedule.map(p => p.finish), 1);
+
+    vmsUsed.forEach(vmId => {
+      const vmPlacements = schedule.filter(p => p.vm === vmId);
+      const row = document.createElement('div');
+      row.className = 'gantt-vm-row';
+
+      const label = document.createElement('div');
+      label.className = 'gantt-vm-label';
+      label.textContent = `VM-${vmId}`;
+      row.appendChild(label);
+
+      const timeline = document.createElement('div');
+      timeline.className = 'gantt-timeline';
+
+      vmPlacements.forEach(p => {
+        const leftPct = (p.start / maxFinish) * 100;
+        const widthPct = Math.max(0.6, ((p.finish - p.start) / maxFinish) * 100);
+
+        const block = document.createElement('div');
+        block.className = p.is_dup ? 'gantt-block dup' : 'gantt-block';
+        block.style.left = `${leftPct}%`;
+        block.style.width = `${widthPct}%`;
+        block.title = `Task T${p.task} [${p.start.toFixed(1)}s - ${p.finish.toFixed(1)}s] ${p.is_dup ? '(Duplicated Parent)' : ''}`;
+        block.textContent = `T${p.task}${p.is_dup ? '*' : ''}`;
+        timeline.appendChild(block);
+      });
+
+      row.appendChild(timeline);
+      container.appendChild(row);
+    });
+  }
+
+  // Initialize
+  window.addEventListener('DOMContentLoaded', () => {
+    renderWtlTable();
+    renderCaseData();
+  });
+</script>
+
+</body>
+</html>
